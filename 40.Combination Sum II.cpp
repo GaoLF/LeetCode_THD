@@ -15,11 +15,39 @@ struct ListNode {
 
 class Solution {
 public:
-    vector<int> fuc() {
-
-    }
+    vector<vector<int> > combinationSum2(vector<int>& candidates, int target) {
+        vector<vector<int> > res;
+		vector<int> temp;
+		sort(candidates.begin(),candidates.end());
+		sumHelper(candidates,target,temp,res,0); 
+    	return res;
+	}
+    void sumHelper(vector<int>& can,int tar,vector<int> &temp,vector<vector<int> >&res,int i){
+    	if(i >= can.size())
+			return; 
+    	if(can[i] == tar){
+    		temp.push_back(tar);
+    		if(find(res.begin(),res.end(),temp) == res.end()) 
+    			res.push_back(temp);
+    		temp.erase(temp.end()-1);
+		}
+		else if(can[i] < tar){
+			sumHelper(can,tar,temp,res,i+1);
+			int size = temp.size();
+			temp.push_back(can[i]);
+			sumHelper(can,tar-can[i],temp,res,i+1);
+			temp.erase(temp.begin()+size); 
+		}
+	}
     void test(){
-
+		int A[] = {10,1,2,7,6,1,5};
+		vector<int> B(A,A+7);
+		vector<vector<int> > res = combinationSum2(B,8);
+		for(int i = 0;i < res.size();i ++){
+			for(int j = 0;j < res[i].size();j ++)
+				cout<<res[i][j]<<" ";
+			cout<<endl;
+		}
 	}
 };
 
